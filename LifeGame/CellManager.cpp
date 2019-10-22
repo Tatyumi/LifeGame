@@ -9,16 +9,19 @@ CCellManager::CCellManager()
 	cursorY = 0;
 }
 
+// ‰Šú‰»
 void CCellManager::Initialize()
 {
 	memset(cell, 0, sizeof(cell));
 }
 
+// ƒJ[ƒ\ƒ‹‚ðƒZƒbƒg
 void CCellManager::SetCursor(CFieldManager* cField)
 {
 	cField->SetField(cursorY, cursorX, "");
 }
 
+// ƒJ[ƒ\ƒ‹‘€ì
 void CCellManager::MoveCursor()
 {
 	// ƒL[“ü—ÍŽó•t
@@ -51,7 +54,13 @@ void CCellManager::MoveCursor()
 
 		case'\r':
 			// Žž‚ðŒo‰ß‚³‚¹‚é
-			GetAdjacenLivesCount(cursorY, cursorX);
+			NextGeneration();
+			break;
+
+			// ƒGƒXƒP[ƒvƒL[
+		case 0x1b:
+			// ƒZƒ‹‘S–Å
+			memset(cell, 0, sizeof(cell));
 			break;
 	}
 }
@@ -105,46 +114,46 @@ void CCellManager::NextGeneration()
 	{
 		for (int x = 0; x < FIELD_WIDTH; x++)
 		{
-			// ï¿½×Ú‚ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½æ“¾
+			// —×Ú‚·‚éƒZƒ‹‚Ì”‚ðŽæ“¾
 			int AdjacenLivesCellCount = GetAdjacenLivesCount(y, x);
 
-			// ï¿½Zï¿½ï¿½ï¿½ÌŽï¿½ï¿½Ìï¿½ï¿½
+			// ƒZƒ‹‚ÌŽŸ‚Ìó‘Ô
 			int cellNextState = cell[y][x];
 
-			// ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ÌƒZï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
+			// ƒtƒB[ƒ‹ƒh‚ÌƒZƒ‹‚ðƒ`ƒFƒbƒN
 			if (cell[y][x])
 			{
-				// ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡
+				// ¶‚«‚Ä‚¢‚éê‡
 
-				// ï¿½ß–ï¿½ï¿½Aï¿½Ü‚ï¿½ï¿½Í‰ß‘aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				// ‰ß–§A‚Ü‚½‚Í‰ß‘a‚©”»•Ê
 				if (AdjacenLivesCellCount <= DEPOPULATION || AdjacenLivesCellCount >= DENSE)
 				{
-					// ï¿½ß–ï¿½ï¿½Aï¿½Ü‚ï¿½ï¿½Í‰ß‘aï¿½Ìê‡
+					// ‰ß–§A‚Ü‚½‚Í‰ß‘a‚Ìê‡
 
-					// ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ÌƒZï¿½ï¿½ï¿½ÍŽï¿½ï¿½Å‚ï¿½ï¿½ï¿½
+					// ŽŸ‚Ì¢‘ã‚ÌƒZƒ‹‚ÍŽ€–Å‚·‚é
 					cellNextState = 0;
 				}
 
 			}
 			else
 			{
-				// ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ê‡
+				// Ž€‚ñ‚Å‚¢‚éê‡
 
-				// ï¿½×Ú‚ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½ÌŒÂï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
+				// —×Ú‚·‚éƒZƒ‹‚ÌŒÂ”‚ª3‚©ƒ`ƒFƒbƒN
 				if (AdjacenLivesCellCount == BORN)
 				{
-					// 3ï¿½Ìê‡
+					// 3‚Ìê‡
 
-					// ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ÌƒZï¿½ï¿½ï¿½aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					// ŽŸ‚Ì¢‘ã‚ÌƒZƒ‹’a¶‚³‚¹‚é
 					cellNextState = 1;
 				}
 			}
 
-			// ï¿½ï¿½ï¿½ÌƒZï¿½ï¿½ï¿½Ìï¿½Ô‚ï¿½æ“¾
+			// ŽŸ‚ÌƒZƒ‹‚Ìó‘Ô‚ðŽæ“¾
 			nextCell[y][x] = cellNextState;
 		}
 	}
 
-	// ï¿½ï¿½ï¿½ÌƒZï¿½ï¿½ï¿½Ìï¿½Ô‚ï¿½Rï¿½sï¿½[ï¿½ï¿½ï¿½ï¿½
+	// ŽŸ‚ÌƒZƒ‹‚Ìó‘Ô‚ðƒRƒs[‚·‚é
 	memcpy_s(cell, sizeof(cell), nextCell, sizeof(nextCell));
 }
