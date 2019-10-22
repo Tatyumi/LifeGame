@@ -112,10 +112,48 @@ void CCellManager::NextGeneration()
 {
 	for (int y = 0; y < FIELD_HEIGHT; y++)
 	{
-
 		for (int x = 0; x < FIELD_WIDTH; x++)
 		{
-			int cellState = GetAdjacenLivesCount(y, x);
+			// �אڂ���Z���̐���擾
+			int AdjacenLivesCellCount = GetAdjacenLivesCount(y, x);
+
+			// �Z���̎��̏��
+			int cellNextState = cell[y][x];
+
+			// �t�B�[���h�̃Z����`�F�b�N
+			if (cell[y][x])
+			{
+				// �����Ă���ꍇ
+
+				// �ߖ��A�܂��͉ߑa������
+				if (AdjacenLivesCellCount <= DEPOPULATION || AdjacenLivesCellCount >= DENSE)
+				{
+					// �ߖ��A�܂��͉ߑa�̏ꍇ
+
+					// ���̐���̃Z���͎��ł���
+					cellNextState = 0;
+				}
+
+			}
+			else
+			{
+				// ����ł���ꍇ
+
+				// �אڂ���Z���̌���3���`�F�b�N
+				if (AdjacenLivesCellCount == BORN)
+				{
+					// 3�̏ꍇ
+
+					// ���̐���̃Z���a��������
+					cellNextState = 1;
+				}
+			}
+
+			// ���̃Z���̏�Ԃ�擾
+			nextCell[y][x] = cellNextState;
 		}
 	}
+
+	// ���̃Z���̏�Ԃ�R�s�[����
+	memcpy_s(cell, sizeof(cell), nextCell, sizeof(nextCell));
 }
