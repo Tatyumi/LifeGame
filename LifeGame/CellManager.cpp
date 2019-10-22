@@ -91,15 +91,6 @@ int CCellManager::GetAdjacenLivesCount(int vecY, int vecX)
 
 				// セルの値を加算（生きている場合1が格納されている）
 				liveCellCount += cell[targetVecY][targetVecX];
-/*
-				if (cell[y][x] == 0)
-				{
-
-				}
-				else
-				{
-
-				}*/
 			}
 		}
 	}
