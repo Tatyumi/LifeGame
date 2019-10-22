@@ -1,6 +1,14 @@
 #pragma once
 #include "FieldManager.h"
 
+enum ECellState
+{
+	DEPOPULATION = 1,	// âﬂëa
+	BORN = 3,			// íaê∂
+	DENSE = 4,			// âﬂñß
+};
+
+
 class CCellManager
 {
 
